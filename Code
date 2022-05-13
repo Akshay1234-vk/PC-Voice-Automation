@@ -1,0 +1,51 @@
+import speech_recognition as sr
+import pyttsx3
+import pyautogui
+import time
+
+listener = sr.Recognizer()
+reply_voice = pyttsx3.init()
+
+def reply(text):
+    reply_voice.say(text)
+    reply_voice.runAndWait()
+
+i = 1
+
+while i == 1:
+    try:
+        with sr.Microphone() as source:
+            reply("What do you want me to control in your PC?")
+
+            voice = listener.listen(source)
+            command = listener.recognize_google(voice)
+            command = command.lower()
+
+            if 'open' in command:
+                app_command = command.replace('open' , '')
+                pyautogui.hotkey('winleft')
+                time.sleep(1)
+                pyautogui.typewrite(app_command)
+                time.sleep(1)
+                pyautogui.press('enter')
+                reply("opening")
+                reply(app_command)
+
+            elif 'volume up' in command:
+                pyautogui.press('volumeup')
+                pyautogui.press('volumeup')
+                pyautogui.press('volumeup')
+                pyautogui.press('volumeup')
+                pyautogui.press('volumeup')
+                reply("Increasing Volume...")
+
+            elif 'volume down' in command:
+                pyautogui.press('volumedown')
+                pyautogui.press('volumedown')
+                pyautogui.press('volumedown')
+                pyautogui.press('volumedown')
+                pyautogui.press('volumedown')
+                reply("Decreasing Volume...")
+
+    except:
+        pass
